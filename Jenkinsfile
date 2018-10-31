@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'jestefane/php:7.2-fpm'
+      image 'jestefane/php:7.2'
     }
 
   }
