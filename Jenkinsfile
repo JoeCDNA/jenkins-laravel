@@ -16,4 +16,9 @@ php artisan key:generate'''
       }
     }
   }
+  environment {
+    HTTP_PROXY = 'http://10.216.0.249:8080/'
+    HTTPS_PROXY = 'http://10.216.0.249:8080/'
+    FTP_PROXY = 'ftp://10.216.0.248:1080/'
+  }
 }
