@@ -7,12 +7,20 @@ pipeline {
   }
   stages {
     stage('Build Laravel') {
-      steps {
-        sh '''env
-cat /etc/resolv.conf
-composer install
-php -r "file_exists(\'.env\') || copy(\'.env.example\', \'.env\');"
+      parallel {
+        stage('Build (PHP)') {
+          steps {
+            sh 'composer install'
+            sh '''php -r "file_exists(\'.env\') || copy(\'.env.example\', \'.env\');"
 php artisan key:generate'''
+          }
+        }
+        stage('Build (JS)') {
+          steps {
+            sh 'yarn'
+            sh 'gulp'
+          }
+        }
       }
     }
     stage('Tests') {
