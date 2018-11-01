@@ -18,7 +18,7 @@ php artisan key:generate'''
         stage('Build (JS)') {
           steps {
             sh 'yarn'
-            sh 'gulp'
+            sh './node_modules/.bin/gulp'
           }
         }
       }
