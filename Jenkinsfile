@@ -15,6 +15,11 @@ php -r "file_exists(\'.env\') || copy(\'.env.example\', \'.env\');"
 php artisan key:generate'''
       }
     }
+    stage('Tests') {
+      steps {
+        sh 'php ./vendor/phpunit/phpunit/phpunit --configuration phpunit.xml'
+      }
+    }
   }
   environment {
     HTTP_PROXY = 'http://10.216.0.249:8080/'
