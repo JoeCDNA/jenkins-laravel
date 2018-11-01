@@ -8,7 +8,9 @@ pipeline {
   stages {
     stage('Build Laravel') {
       steps {
-        sh '''composer install
+        sh '''env
+cat /etc/resolv.conf
+composer install
 php -r "file_exists(\\\'.env\\\') || copy(\\\'.env.example\\\', \\\'.env\\\');"
 php artisan key:generate'''
       }
