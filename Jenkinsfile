@@ -28,6 +28,12 @@ php artisan key:generate'''
         sh 'php ./vendor/phpunit/phpunit/phpunit --configuration phpunit.xml'
       }
     }
+    stage('Archive') {
+      steps {
+        zip(zipFile: 'laravel-build.zip', dir: '.')
+        sh 'ls -la'
+      }
+    }
   }
   environment {
     HTTP_PROXY = 'http://10.216.0.249:8080/'
