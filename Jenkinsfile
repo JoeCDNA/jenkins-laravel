@@ -34,6 +34,15 @@ php artisan key:generate'''
         sh 'ls -la'
       }
     }
+    stage('Upload') {
+      steps {
+        ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
+          [configName: 'NYCNS102 (Backup FTP)', transfers: [
+            [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip']
+            ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
+          ]
+      }
+    }
   }
   environment {
     HTTP_PROXY = 'http://10.216.0.249:8080/'
@@ -41,3 +50,7 @@ php artisan key:generate'''
     FTP_PROXY = 'ftp://10.216.0.248:1080/'
   }
 }
+
+
+
+
