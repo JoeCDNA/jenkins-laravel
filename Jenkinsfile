@@ -33,7 +33,7 @@ php artisan key:generate'''
         zip(zipFile: 'laravel-build.zip', dir: '.')
         sh 'ls -la'
 
-        ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
+        ftpPublisher masterNodeName: master-docker-node, alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
           [configName: 'NYCNS102 (Backup FTP)', transfers: [
             [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip']
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
