@@ -6,16 +6,16 @@ pipeline {
 
   }
   stages {
-    stage('Build Laravel') {
+    stage('Build Dependencies') {
       parallel {
-        stage('Build (PHP)') {
+        stage('PHP') {
           steps {
             sh 'composer install'
             sh '''php -r "file_exists(\'.env\') || copy(\'.env.example\', \'.env\');"
 php artisan key:generate'''
           }
         }
-        stage('Build (JS)') {
+        stage('Javascript') {
           steps {
             sh 'yarn'
             sh 'yarn dev'
@@ -32,13 +32,12 @@ php artisan key:generate'''
       steps {
         zip(zipFile: 'laravel-build.zip', dir: '.')
         sh 'ls -la'
-      }
-      steps {
+
         ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
           [configName: 'NYCNS102 (Backup FTP)', transfers: [
             [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip']
-            ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
-          ]
+          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
+        ]
       }
     }
   }
