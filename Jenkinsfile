@@ -33,8 +33,6 @@ php artisan key:generate'''
         zip(zipFile: 'laravel-build.zip', dir: '.')
         sh 'ls -la'
       }
-    }
-    stage('Upload') {
       steps {
         ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
           [configName: 'NYCNS102 (Backup FTP)', transfers: [
