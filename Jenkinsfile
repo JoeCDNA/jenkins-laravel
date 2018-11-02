@@ -31,23 +31,17 @@ php artisan key:generate'''
     stage('Archive') {
       steps {
         zip(zipFile: 'laravel-build.zip', dir: '.')
-        sh 'ls -la'
-
-        ftpPublisher masterNodeName: 'master-docker-node', alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
-          [configName: 'NYCNS102 (Backup FTP)', transfers: [
-            [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip']
-          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
-        ], paramPublish: [parameterName: '']
+        ftpPublisher(masterNodeName: 'master-docker-node', alwaysPublishFromMaster: true, continueOnError: true, failOnError: true, publishers: [
+                    [configName: 'NYCNS102 (Backup FTP)', transfers: [
+                        [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip']
+                      ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
+                    ], paramPublish: [parameterName: ''])
+          }
+        }
+      }
+      environment {
+        HTTP_PROXY = 'http://10.216.0.249:8080/'
+        HTTPS_PROXY = 'http://10.216.0.249:8080/'
+        FTP_PROXY = 'ftp://10.216.0.248:1080/'
       }
     }
-  }
-  environment {
-    HTTP_PROXY = 'http://10.216.0.249:8080/'
-    HTTPS_PROXY = 'http://10.216.0.249:8080/'
-    FTP_PROXY = 'ftp://10.216.0.248:1080/'
-  }
-}
-
-
-
-
