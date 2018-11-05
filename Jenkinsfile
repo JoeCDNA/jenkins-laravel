@@ -45,6 +45,11 @@ php artisan key:generate'''
             sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip')
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
         ])
+        sshPublisher(publishers: [
+          sshPublisherDesc(configName: 'NYCUB36T', transfers: [
+            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'unzip laravel-build.zip', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
+          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
+        ])
       }
     }
   }
