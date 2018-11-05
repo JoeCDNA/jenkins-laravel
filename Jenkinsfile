@@ -47,12 +47,12 @@ php artisan key:generate'''
         ])
         sshPublisher(publishers: [
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
-            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'pwd; ls -la; unzip laravel-build.zip -d laravel-build', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
+            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'cd /tmp/buildz && unzip laravel-build.zip -d laravel-build', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
         ])
         sshPublisher(publishers: [
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
-            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'pwd; ls -la; mv laravel-build /var/www/html/', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
+            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'mv /tmp/buildz/laravel-build /var/www/html/laravel-build', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
         ])
       }
