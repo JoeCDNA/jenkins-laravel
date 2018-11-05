@@ -36,12 +36,21 @@ php artisan key:generate'''
                         [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip']
                       ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
                     ], paramPublish: [parameterName: ''])
-          }
-        }
-      }
-      environment {
-        HTTP_PROXY = 'http://10.216.0.249:8080/'
-        HTTPS_PROXY = 'http://10.216.0.249:8080/'
-        FTP_PROXY = 'ftp://10.216.0.248:1080/'
       }
     }
+    stage('Deploy') {
+      steps {
+        sshPublisher(publishers: [
+          sshPublisherDesc(configName: 'NYCUB36T', transfers: [
+            sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip')
+          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
+        ])
+      }
+    }
+  }
+  environment {
+    HTTP_PROXY = 'http://10.216.0.249:8080/'
+    HTTPS_PROXY = 'http://10.216.0.249:8080/'
+    FTP_PROXY = 'ftp://10.216.0.248:1080/'
+  }
+}
