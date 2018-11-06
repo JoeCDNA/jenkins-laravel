@@ -30,8 +30,8 @@ php artisan key:generate'''
     }
     stage('Archive') {
       steps {
-        zip archive: true, dir: '', glob: '', zipFile: '${JOB_NAME}-${BUILD_NUMBER}.zip'
-        ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: false, publishers: [
+        zip archive: true, dir: '', glob: '', zipFile: '${BUILD_TAG}.zip'
+        ftpPublisher(masterNodeName: 'master-docker-node', alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
           [configName: 'NYCNS102 (Backup FTP)', transfers: [
             [
               asciiMode: false,
@@ -44,10 +44,10 @@ php artisan key:generate'''
               remoteDirectory: '${JOB_NAME}',
               remoteDirectorySDF: false,
               removePrefix: '',
-              sourceFiles: '${JOB_NAME}-${BUILD_NUMBER}.zip'
+              sourceFiles: '${BUILD_TAG}.zip'
             ]
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]
-        ]
+        ], paramPublish: [parameterName: ''])
       }
     }
     stage('Deploy') {
@@ -57,7 +57,7 @@ php artisan key:generate'''
             sshTransfer(
               cleanRemote: false,
               excludes: '',
-              execCommand: 'cd /tmp/${JOB_NAME} && unzip ${JOB_NAME}-${BUILD_NUMBER}.zip -d ${JOB_NAME}-${BUILD_NUMBER}',
+              execCommand: 'cd /tmp/${JOB_NAME} && unzip ${BUILD_TAG}.zip -d ${BUILD_TAG}',
               execTimeout: 120000,
               flatten: false,
               makeEmptyDirs: false,
@@ -66,14 +66,14 @@ php artisan key:generate'''
               remoteDirectory: '${JOB_NAME}',
               remoteDirectorySDF: false,
               removePrefix: '',
-              sourceFiles: '${JOB_NAME}-${BUILD_NUMBER}.zip')
+              sourceFiles: '${BUILD_TAG}.zip')
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
         ])
         sshPublisher(publishers: [
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
             sshTransfer(cleanRemote: false,
             excludes: '',
-            execCommand: 'mv /tmp/${JOB_NAME}/${JOB_NAME}-${BUILD_NUMBER} /var/www/html/${JOB_NAME} && cd /var/www/html/${JOB_NAME} && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
+            execCommand: 'mv /tmp/${JOB_NAME}/${BUILD_TAG} /var/www/html/${JOB_NAME} && cd /var/www/html/${JOB_NAME} && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
             execTimeout: 120000,
             flatten: false,
             makeEmptyDirs: false,
