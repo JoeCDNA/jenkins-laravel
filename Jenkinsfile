@@ -31,6 +31,7 @@ php artisan key:generate'''
     }
     stage('Archive') {
       steps {
+        sh 'env'
         zip archive: false, dir: '', glob: '', zipFile: 'build.zip'
         sh 'mv build.zip ${BUILD_TAG}.zip'
         archiveArtifacts artifacts: '${BUILD_TAG}.zip', fingerprint: true
