@@ -30,7 +30,7 @@ php artisan key:generate'''
     }
     stage('Archive') {
       steps {
-        zip(zipFile: 'laravel-build.zip', dir: '.')
+        zip(zipFile: 'laravel-build.zip', dir: '.', archive: true)
         ftpPublisher(masterNodeName: 'master-docker-node', alwaysPublishFromMaster: true, continueOnError: true, failOnError: true, publishers: [
                     [configName: 'NYCNS102 (Backup FTP)', transfers: [
                         [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip']
@@ -42,17 +42,12 @@ php artisan key:generate'''
       steps {
         sshPublisher(publishers: [
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
-            sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip')
+            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'cd /tmp/buildz && unzip laravel-build.zip -d laravel-build', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'laravel-build.zip')
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
         ])
         sshPublisher(publishers: [
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
-            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'cd /tmp/buildz && unzip laravel-build.zip -d laravel-build', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
-          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
-        ])
-        sshPublisher(publishers: [
-          sshPublisherDesc(configName: 'NYCUB36T', transfers: [
-            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'mv /tmp/buildz/laravel-build /var/www/html/laravel-build', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
+            sshTransfer(cleanRemote: false, excludes: '', execCommand: 'mv /tmp/buildz/laravel-build /var/www/html/laravel-build && cd /var/www/html/laravel-build && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'buildz', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')
           ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)
         ])
       }
