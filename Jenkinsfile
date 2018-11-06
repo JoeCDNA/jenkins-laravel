@@ -19,6 +19,8 @@ php artisan key:generate'''
           steps {
             sh 'yarn'
             sh 'yarn dev'
+            sh 'gulp'
+            sh 'rm -Rf node_modules'
           }
         }
       }
