@@ -45,7 +45,7 @@ php artisan key:generate'''
               makeEmptyDirs: true,
               noDefaultExcludes: false,
               patternSeparator: '[, ]+',
-              remoteDirectory: 'jenkins-builds',
+              remoteDirectory: 'jenkins-laravel',
               remoteDirectorySDF: false,
               removePrefix: '',
               sourceFiles: '${BUILD_TAG}.zip'
