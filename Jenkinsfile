@@ -44,7 +44,7 @@ php artisan key:generate'''
               makeEmptyDirs: true,
               noDefaultExcludes: false,
               patternSeparator: '[, ]+',
-              remoteDirectory: '${JOB_NAME}',
+              remoteDirectory: '${PROJECT_NAME}',
               remoteDirectorySDF: false,
               removePrefix: '',
               sourceFiles: '${BUILD_TAG}.zip'
@@ -60,7 +60,7 @@ php artisan key:generate'''
             sshTransfer(
               cleanRemote: false,
               excludes: '',
-              execCommand: 'cd /tmp/${JOB_NAME} && unzip ${BUILD_TAG}.zip -d ${BUILD_TAG}',
+              execCommand: 'cd /tmp/${PROJECT_NAME} && unzip ${BUILD_TAG}.zip -d ${BUILD_TAG}',
               execTimeout: 120000,
               flatten: false,
               makeEmptyDirs: false,
@@ -76,7 +76,7 @@ php artisan key:generate'''
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
             sshTransfer(cleanRemote: false,
             excludes: '',
-            execCommand: 'mv /tmp/${JOB_NAME} /var/www/html/${JOB_NAME} && cd /var/www/html/${JOB_NAME} && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
+            execCommand: 'mv /tmp/${JOB_NAME} /var/www/html/${PROJECT_NAME} && cd /var/www/html/${PROJECT_NAME} && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
             execTimeout: 120000,
             flatten: false,
             makeEmptyDirs: false,
