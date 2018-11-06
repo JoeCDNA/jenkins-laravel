@@ -75,7 +75,7 @@ php artisan key:generate'''
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
             sshTransfer(cleanRemote: false,
             excludes: '',
-            execCommand: 'mv /tmp/${JOB_NAME}/${BUILD_TAG} /var/www/html/${JOB_NAME} && cd /var/www/html/${JOB_NAME} && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
+            execCommand: 'mv /tmp/${JOB_NAME}/${BUILD_TAG} /var/www/html/${JOB_BASE_NAME} && cd /var/www/html/${JOB_BASE_NAME} && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
             execTimeout: 120000,
             flatten: false,
             makeEmptyDirs: false,
