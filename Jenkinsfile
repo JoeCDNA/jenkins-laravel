@@ -30,7 +30,8 @@ php artisan key:generate'''
     }
     stage('Archive') {
       steps {
-        zip archive: true, dir: '', glob: '', zipFile: '${BUILD_TAG}.zip'
+        zip archive: true, dir: '', glob: '', zipFile: 'build.zip'
+        sh 'mv build.zip ${BUILD_TAG}.zip'
         ftpPublisher(masterNodeName: 'master-docker-node', alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
           [configName: 'NYCNS102 (Backup FTP)', transfers: [
             [
