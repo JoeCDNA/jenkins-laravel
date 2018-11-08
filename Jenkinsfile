@@ -77,7 +77,7 @@ php artisan key:generate'''
           sshPublisherDesc(configName: 'NYCUB36T', transfers: [
             sshTransfer(cleanRemote: false,
             excludes: '',
-            execCommand: 'mv /tmp/jenkins-builds/${BUILD_TAG} /var/www/html/jenkins-laravel && cd /var/www/html/jenkins-laravel && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
+            execCommand: 'mv /tmp/jenkins-builds/${BUILD_TAG} /var/www/html/jenkins-laravel && rm -Rf /tmp/jenkins-builds && cd /var/www/html/jenkins-laravel && sudo chgrp -R www-data storage bootstrap/cache && sudo chmod -R ug+rwx storage bootstrap/cache',
             execTimeout: 120000,
             flatten: false,
             makeEmptyDirs: false,
